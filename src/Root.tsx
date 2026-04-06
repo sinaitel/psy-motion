@@ -6,14 +6,17 @@ import { INTRO_DURATION_FRAMES } from './sections/Intro';
 import { OUTRO_DURATION_FRAMES } from './sections/Outro';
 
 const DEFAULT_PROPS: PsyVideoProps = {
-  audioSrc: 'public/ep31.mp3',
+  audioSrc: 'public/FR-Ep-22.mp3',
   lang: 'fr',
-  words: ['La', 'psychanalyse', 'commence', 'ici'],
+  words: ['Pensée', 'catastrophique', '—', 'ce', 'que', 'la', 'science', "n'explique", 'presque', 'jamais.'],
   scenes: [
-    { type: 'face', durationSec: 5, tooltip: 'Pensée catastrophique' },
-    { type: 'brain', durationSec: 5, tooltip: 'Réseau du mode par défaut' },
-    { type: 'object', durationSec: 4 },
-    { type: 'place', durationSec: 4 },
+    { type: 'face', durationSec: 12, tooltip: 'Pensée catastrophique' },
+    { type: 'brain', durationSec: 14, tooltip: 'Réseau du mode par défaut' },
+    { type: 'face', durationSec: 10, tooltip: 'Anticipation des menaces' },
+    { type: 'brain', durationSec: 16, tooltip: 'Amygdale hyperactive', params: { glowColor: '#ffb347', intensity: 0.9 } },
+    { type: 'face', durationSec: 12, tooltip: 'Mode survie' },
+    { type: 'brain', durationSec: 14, tooltip: 'Câblage neuronal' },
+    { type: 'face', durationSec: 15 },
   ],
 };
 

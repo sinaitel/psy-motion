@@ -1,0 +1,48 @@
+{
+  "audioSrc": "public/FR-Ep-22.mp3",
+  "lang": "fr",
+  "words": ["Pensée", "catastrophique", "—", "ce", "que", "la", "science", "n'explique", "presque", "jamais."],
+  "scenes": [
+    {
+      "type": "face",
+      "durationSec": 12,
+      "tooltip": "Pensée catastrophique",
+      "params": { "glowColor": "#d4af37", "intensity": 0.7 }
+    },
+    {
+      "type": "brain",
+      "durationSec": 14,
+      "tooltip": "Réseau du mode par défaut",
+      "params": { "glowColor": "#d4af37", "intensity": 0.8 }
+    },
+    {
+      "type": "face",
+      "durationSec": 10,
+      "tooltip": "Anticipation des menaces",
+      "params": { "glowColor": "#d4af37", "intensity": 0.7 }
+    },
+    {
+      "type": "brain",
+      "durationSec": 16,
+      "tooltip": "Amygdale hyperactive",
+      "params": { "glowColor": "#ffb347", "intensity": 0.9 }
+    },
+    {
+      "type": "face",
+      "durationSec": 12,
+      "tooltip": "Mode survie",
+      "params": { "glowColor": "#d4af37", "intensity": 0.8 }
+    },
+    {
+      "type": "brain",
+      "durationSec": 14,
+      "tooltip": "Câblage neuronal",
+      "params": { "glowColor": "#d4af37", "intensity": 0.75 }
+    },
+    {
+      "type": "face",
+      "durationSec": 15,
+      "params": { "glowColor": "#d4af37", "intensity": 0.6 }
+    }
+  ]
+}
