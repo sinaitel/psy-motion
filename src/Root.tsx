@@ -10,13 +10,16 @@ const DEFAULT_PROPS: PsyVideoProps = {
   lang: 'fr',
   words: ['Pensée', 'catastrophique', '—', 'ce', 'que', 'la', 'science', "n'explique", 'presque', 'jamais.'],
   scenes: [
-    { type: 'face', durationSec: 12, tooltip: 'Pensée catastrophique' },
-    { type: 'brain', durationSec: 14, tooltip: 'Réseau du mode par défaut' },
-    { type: 'face', durationSec: 10, tooltip: 'Anticipation des menaces' },
-    { type: 'brain', durationSec: 16, tooltip: 'Amygdale hyperactive', params: { glowColor: '#ffb347', intensity: 0.9 } },
-    { type: 'face', durationSec: 12, tooltip: 'Mode survie' },
-    { type: 'brain', durationSec: 14, tooltip: 'Câblage neuronal' },
-    { type: 'face', durationSec: 15 },
+    { type: 'pillow',    durationSec: 11, tooltip: 'Insomnie de rumination' },
+    { type: 'eye',       durationSec: 10, tooltip: 'Hypervigilance nocturne' },
+    { type: 'vortex',    durationSec: 12, tooltip: 'Pensée catastrophique' },
+    { type: 'neurons',   durationSec: 13, tooltip: 'Réseau du mode par défaut' },
+    { type: 'face',      durationSec: 10, tooltip: 'Anticipation des menaces' },
+    { type: 'heartrate', durationSec: 11, tooltip: 'Activation physiologique', params: { glowColor: '#ff6b6b', intensity: 0.85 } },
+    { type: 'brain',     durationSec: 14, tooltip: 'Amygdale hyperactive', params: { glowColor: '#ffb347', intensity: 0.9 } },
+    { type: 'face',      durationSec: 10, tooltip: 'Mode survie' },
+    { type: 'vortex',    durationSec: 9,  tooltip: 'Boucle de pensée' },
+    { type: 'pillow',    durationSec: 13 },
   ],
 };
 

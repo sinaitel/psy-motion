@@ -1,4 +1,4 @@
-export type SceneType = 'face' | 'brain' | 'object' | 'place';
+export type SceneType = 'face' | 'brain' | 'object' | 'place' | 'eye' | 'neurons' | 'heartrate' | 'vortex' | 'pillow';
 
 export type SceneConfig = {
   type: SceneType;
