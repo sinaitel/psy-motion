@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Audio, Sequence, useVideoConfig } from 'remotion';
+import { AbsoluteFill, Audio, Sequence, staticFile, useVideoConfig } from 'remotion';
 import { PsyVideoProps } from './types';
 import { Intro, INTRO_DURATION_FRAMES } from './sections/Intro';
 import { SceneSequence } from './sections/SceneSequence';
@@ -20,7 +20,7 @@ export const PsyVideo: React.FC<PsyVideoProps> = ({
 
   return (
     <AbsoluteFill style={{ background: '#000000' }}>
-      <Audio src={audioSrc} />
+      <Audio src={staticFile(audioSrc.replace('public/', ''))} />
 
       <Sequence from={0} durationInFrames={INTRO_DURATION_FRAMES}>
         <Intro />

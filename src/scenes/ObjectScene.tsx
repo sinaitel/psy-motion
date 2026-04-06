@@ -1,5 +1,9 @@
-import React from 'react';
-import { interpolate, useCurrentFrame } from 'remotion';
+import React, { useEffect, useRef } from 'react';
+import { useCurrentFrame, useVideoConfig } from 'remotion';
+import {
+  clearCanvas, drawVignette, drawGlowCircle,
+  drawParticles, seedParticles, hexToRgb, drawRadialGlow,
+} from '../utils/canvas';
 
 type Props = {
   durationInFrames: number;
@@ -7,68 +11,128 @@ type Props = {
   intensity?: number;
 };
 
-const SPLATS = [
-  { x: 20, y: 25, len: 35, angle: -30 },
-  { x: 75, y: 30, len: 28, angle: 45 },
-  { x: 15, y: 65, len: 40, angle: 15 },
-  { x: 80, y: 70, len: 32, angle: -55 },
-];
+const PARTICLES = seedParticles(60, 1080, 1920, 77);
+
+function drawIcosahedron(
+  ctx: CanvasRenderingContext2D,
+  cx: number, cy: number,
+  radius: number,
+  rotation: number,
+  glowColor: string,
+  intensity: number
+) {
+  const sides = 20;
+  const innerR = radius * 0.55;
+
+  // Outer rings (3 tilted)
+  for (let ring = 0; ring < 3; ring++) {
+    const tilt = ring * (Math.PI / 3) + rotation;
+    const ringOpacity = 0.4 + 0.3 * Math.sin(rotation * 2 + ring);
+
+    ctx.save();
+    ctx.globalAlpha = ringOpacity * intensity;
+    ctx.shadowColor = glowColor;
+    ctx.shadowBlur = 20;
+    ctx.strokeStyle = glowColor;
+    ctx.lineWidth = 1.5;
+
+    ctx.beginPath();
+    for (let i = 0; i <= sides; i++) {
+      const angle = (i / sides) * Math.PI * 2;
+      const x = cx + radius * Math.cos(angle) * Math.cos(tilt);
+      const y = cy + radius * Math.sin(angle);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Internal structure — lines from center to ring
+  const spokes = 12;
+  for (let i = 0; i < spokes; i++) {
+    const angle = (i / spokes) * Math.PI * 2 + rotation * 0.7;
+    const ox = cx + innerR * Math.cos(angle);
+    const oy = cy + innerR * Math.sin(angle);
+    const spokeOpacity = (0.3 + 0.3 * Math.sin(rotation * 3 + i)) * intensity;
+
+    ctx.save();
+    ctx.globalAlpha = spokeOpacity;
+    ctx.strokeStyle = glowColor;
+    ctx.shadowColor = glowColor;
+    ctx.shadowBlur = 8;
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(ox, oy);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Center core
+  drawGlowCircle(ctx, cx, cy, 8, glowColor, 30, intensity);
+  drawGlowCircle(ctx, cx, cy, 3, '#ffffff', 10, intensity * 0.8);
+
+  // Ink fragments orbiting
+  const fragCount = 8;
+  for (let i = 0; i < fragCount; i++) {
+    const angle = (i / fragCount) * Math.PI * 2 + rotation * 1.5;
+    const dist = radius * (0.8 + 0.3 * Math.sin(rotation * 2 + i));
+    const fx = cx + dist * Math.cos(angle);
+    const fy = cy + dist * Math.sin(angle);
+    const fOpacity = (0.4 + 0.4 * Math.sin(rotation + i * 0.8)) * intensity;
+
+    ctx.save();
+    ctx.globalAlpha = fOpacity;
+    ctx.strokeStyle = glowColor;
+    ctx.shadowColor = glowColor;
+    ctx.shadowBlur = 10;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(fx, fy);
+    ctx.lineTo(fx + 20 * Math.cos(angle + Math.PI / 2), fy + 20 * Math.sin(angle + Math.PI / 2));
+    ctx.stroke();
+    ctx.restore();
+  }
+}
 
 export const ObjectScene: React.FC<Props> = ({
   durationInFrames,
   glowColor = '#d4af37',
   intensity = 0.7,
 }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const frame = useCurrentFrame();
-  const rotation = interpolate(frame, [0, durationInFrames], [0, 360]);
+  const { width, height } = useVideoConfig();
 
-  const sides = 12;
-  const points = Array.from({ length: sides }, (_, i) => {
-    const angle = (i * 2 * Math.PI) / sides - Math.PI / 2;
-    return { x: 50 + 28 * Math.cos(angle), y: 50 + 28 * Math.sin(angle) };
-  });
-  const polygonPoints = points.map((p) => `${p.x},${p.y}`).join(' ');
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    clearCanvas(ctx, width, height);
+
+    const rotation = (frame / durationInFrames) * Math.PI * 2;
+    const pulse = 0.5 + 0.5 * Math.sin((frame / 40) * Math.PI);
+
+    drawRadialGlow(ctx, width / 2, height * 0.48, width * 0.6,
+      `rgb(${hexToRgb(glowColor)})`, pulse * 0.15 * intensity);
+
+    drawIcosahedron(ctx, width / 2, height * 0.48, width * 0.28, rotation, glowColor, intensity);
+
+    drawParticles(ctx, PARTICLES, frame, glowColor, intensity * 0.7);
+    drawVignette(ctx, width, height);
+
+  }, [frame, width, height, durationInFrames, glowColor, intensity]);
 
   return (
-    <div style={{ position: 'absolute', inset: 0, background: '#000000' }}>
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: `radial-gradient(ellipse at 50% 50%, ${glowColor}20 0%, transparent 55%)`,
-      }} />
-
-      <svg viewBox="0 0 100 100" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-        {SPLATS.map((s, i) => {
-          const sOpacity = interpolate(
-            (frame + i * 20) % 90,
-            [0, 10, 70, 90],
-            [0, intensity * 0.6, intensity * 0.3, 0]
-          );
-          const rad = (s.angle * Math.PI) / 180;
-          return (
-            <line key={i}
-              x1={s.x} y1={s.y}
-              x2={s.x + s.len * Math.cos(rad)} y2={s.y + s.len * Math.sin(rad)}
-              stroke={glowColor} strokeWidth="0.3" opacity={sOpacity} strokeLinecap="round"
-            />
-          );
-        })}
-
-        <g transform={`rotate(${rotation}, 50, 50)`}>
-          <polygon
-            points={polygonPoints}
-            fill="none"
-            stroke={glowColor}
-            strokeWidth="0.5"
-            opacity={intensity}
-          />
-          {points.filter((_, i) => i % 3 === 0).map((p, i) => (
-            <line key={i} x1={50} y1={50} x2={p.x} y2={p.y}
-              stroke={glowColor} strokeWidth="0.2" opacity={intensity * 0.3} />
-          ))}
-          <circle cx="50" cy="50" r="3" fill={glowColor} opacity={intensity} />
-        </g>
-      </svg>
-    </div>
+    <canvas
+      ref={canvasRef}
+      width={width}
+      height={height}
+      style={{ position: 'absolute', inset: 0 }}
+    />
   );
 };
