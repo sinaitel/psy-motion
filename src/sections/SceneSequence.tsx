@@ -10,6 +10,10 @@ import { NeuronsScene } from '../scenes/NeuronsScene';
 import { HeartRateScene } from '../scenes/HeartRateScene';
 import { VortexScene } from '../scenes/VortexScene';
 import { PillowScene } from '../scenes/PillowScene';
+import { MirrorScene } from '../scenes/MirrorScene';
+import { BreathScene } from '../scenes/BreathScene';
+import { ClockScene } from '../scenes/ClockScene';
+import { WaterScene } from '../scenes/WaterScene';
 import { FloatingTooltip } from '../components/FloatingTooltip';
 import { FollowText } from '../components/FollowText';
 import { PsiLogo } from '../components/PsiLogo';
@@ -30,6 +34,10 @@ const SCENE_MAP = {
   heartrate: HeartRateScene,
   vortex: VortexScene,
   pillow: PillowScene,
+  mirror: MirrorScene,
+  breath: BreathScene,
+  clock: ClockScene,
+  water: WaterScene,
 } as const;
 
 export const SceneSequence: React.FC<Props> = ({ scenes, fps }) => {
