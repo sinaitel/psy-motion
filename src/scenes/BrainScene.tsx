@@ -59,9 +59,11 @@ export const BrainScene: React.FC<Props> = ({
           const na = NODES[a];
           const nb = NODES[b];
           const edgeStart = i * edgeFrameStep;
+          const fadeIn = Math.max(1, Math.floor(edgeFrameStep * 0.25));
+          const fadeOut = Math.max(fadeIn + 1, Math.floor(edgeFrameStep * 0.75));
           const edgeOpacity = interpolate(
             frame,
-            [edgeStart, edgeStart + 20, edgeStart + edgeFrameStep * 0.8, edgeStart + edgeFrameStep],
+            [edgeStart, edgeStart + fadeIn, edgeStart + fadeOut, edgeStart + edgeFrameStep],
             [0.05, intensity * 0.8, intensity * 0.4, 0.05],
             { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
           );

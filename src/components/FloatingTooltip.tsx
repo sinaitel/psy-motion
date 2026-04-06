@@ -9,9 +9,11 @@ type Props = {
 export const FloatingTooltip: React.FC<Props> = ({ text, durationInFrames }) => {
   const frame = useCurrentFrame();
 
+  const fadeIn = Math.min(30, Math.floor(durationInFrames * 0.2));
+  const fadeOut = Math.max(fadeIn + 1, durationInFrames - Math.min(20, Math.floor(durationInFrames * 0.15)));
   const opacity = interpolate(
     frame,
-    [0, 30, durationInFrames - 20, durationInFrames],
+    [0, fadeIn, fadeOut, durationInFrames],
     [0, 1, 1, 0],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
   );
