@@ -1,0 +1,12 @@
+{
+  "audioSrc": "public/ep31.mp3",
+  "lang": "ar",
+  "words": ["لماذا", "تشعر", "أن", "حياتك", "فيلم", "وأنت", "البطل؟"],
+  "scenes": [
+    { "type": "face", "durationSec": 6, "tooltip": "Pensée catastrophique" },
+    { "type": "brain", "durationSec": 5, "tooltip": "Réseau du mode par défaut" },
+    { "type": "face", "durationSec": 5, "tooltip": "Anticipation des menaces" },
+    { "type": "brain", "durationSec": 5, "tooltip": "Amygdale hyperactive" },
+    { "type": "face", "durationSec": 6 }
+  ]
+}
