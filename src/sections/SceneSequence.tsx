@@ -14,6 +14,8 @@ import { MirrorScene } from '../scenes/MirrorScene';
 import { BreathScene } from '../scenes/BreathScene';
 import { ClockScene } from '../scenes/ClockScene';
 import { WaterScene } from '../scenes/WaterScene';
+import { CityScene } from '../scenes/CityScene';
+import { CityWalkScene } from '../scenes/CityWalkScene';
 import { FloatingTooltip } from '../components/FloatingTooltip';
 import { FollowText } from '../components/FollowText';
 import { PsiLogo } from '../components/PsiLogo';
@@ -38,6 +40,8 @@ const SCENE_MAP = {
   breath: BreathScene,
   clock: ClockScene,
   water: WaterScene,
+  city: CityScene,
+  citywalk: CityWalkScene,
 } as const;
 
 export const SceneSequence: React.FC<Props> = ({ scenes, fps }) => {

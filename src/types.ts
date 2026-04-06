@@ -1,7 +1,8 @@
 export type SceneType =
   | 'face' | 'brain' | 'object' | 'place'
   | 'eye' | 'neurons' | 'heartrate' | 'vortex' | 'pillow'
-  | 'mirror' | 'breath' | 'clock' | 'water';
+  | 'mirror' | 'breath' | 'clock' | 'water'
+  | 'city' | 'citywalk';
 
 export type SceneConfig = {
   type: SceneType;
